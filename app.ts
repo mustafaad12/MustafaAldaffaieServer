@@ -1,19 +1,22 @@
 import express, { type Express, type Request, type Response } from 'express';
-import bodyParser from 'body-parser'
+import { UserRoutes } from './routes/userRoutes.ts';
 
 const app: Express = express();
-const port = 3000
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+const port = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/users', new UserRoutes().router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
+    res.send('Hello World!');
 });
 
 app.use((req: Request, res: Response) => {
-    res.send('404 not found')
-})
+    res.status(404).send('404 not found');
+});
 
 app.listen(port, () => {
-    console.log('app is running on the port ' + port)
+    console.log(`App is running on port ${port}`);
 });
